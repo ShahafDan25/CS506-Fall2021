@@ -9,7 +9,7 @@ def point_avg(points):
     #assuming there is an array of points, and each point is an array of x values, x being the dimensionality of all points
     #assuming all points have the same dimenionality.
     pointDimensions = []
-    dims = len(points[i]) #dimensionality
+    dims = len(points[0]) #dimensionality
     for i in range(dims):
         totalValueDimension = 0;
         for point_index in range(len(points)):
@@ -34,8 +34,6 @@ def update_centers(dataset, assignments):
     return centers
 
 def assign_points(data_points, centers):
-    """
-    """
     assignments = []
     for point in data_points:
         shortest = inf  # positive infinity
@@ -51,8 +49,15 @@ def assign_points(data_points, centers):
 
 def distance(a, b):
     res = 0
-    for i in range(len(a)):
-        res += (a[i] - b[i])**2
+    if (b == 0):
+        b = [0] * len(a)
+    if (type(a) == int):
+        x = []
+        x.append(a)
+    else:
+        x = a
+    for i in range(len(x)):
+        res += (x[i] - b[i])**2
     return res**(1/2)
 
 def distance_squared(a, b):
@@ -60,12 +65,11 @@ def distance_squared(a, b):
 
 def generate_k(dataset, k):
     points = []
-    spacing = len(dataset) / k #number of points in each randomized range
     for i in range(k):
-        rand_min = i*spacing
-        rand_max = (i + 1)*sapcing
+        rand_min = i*(int(len(dataset)/k))
+        rand_max = (i + 1)*(int(len(dataset)/k))
         point = random.randint(rand_min, rand_max) #random point in the specified range
-        pointsa.append(dataset[point])
+        points.append(dataset[point])
     return points
 
 def cost_function(clustering):
@@ -83,11 +87,11 @@ def generate_k_pp(dataset, k):
     ws = [distance(point ,0) for point in dataset]
     centroids = []
     chosen_index = []
-    for _ in range(k):
+    for j in range(k):
         i = random.choices(range(len(dataset)), weights = ws, k = 1)[0]
         while i in chosen_index:
             i = random.choices(range(len(dataset)), weights = ws, k = 1)[0]
-        centroids.append(dataset[idx])
+        centroids.append(dataset[i])
         chosen_index.append(i)
     return centroids
 
